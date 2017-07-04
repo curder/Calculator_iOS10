@@ -37,19 +37,21 @@ class ViewController: UIViewController {
         }
     }
     
-    /// π、+、-、*、/ 运算
+    /// 模型属性
+    private var brain = CalculatorBrain()
+    
+    /// π、+、-、×、÷、cos、√、± 等运算
     @IBAction func performOperation(_ sender: UIButton) {
-        self.userIsInTheMiddleOfTyping = false
-        if let mathematicalSymbol = sender.currentTitle {
-            switch mathematicalSymbol {
-            case "π":
-                self.displayValue = Double.pi
-            case "√":
-                self.displayValue = sqrt(self.displayValue)
-            default:
-                break
-            }
+        if self.userIsInTheMiddleOfTyping {
+            self.brain.setOperand(displayValue)
+            self.userIsInTheMiddleOfTyping = false
         }
+        
+        if let mathematicalSymbol = sender.currentTitle {
+            print(mathematicalSymbol)
+            self.brain.performOperation(mathematicalSymbol)
+        }
+        displayValue = brain.result!
         
     }
 }
