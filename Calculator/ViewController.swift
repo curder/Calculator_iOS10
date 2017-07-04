@@ -9,8 +9,48 @@
 import UIKit
 
 class ViewController: UIViewController {
-
     
-
+    @IBOutlet weak var display: UILabel! // 计算结果展示
+    
+    var userIsInTheMiddleOfTyping: Bool = false // 标志用户是否点击
+    
+    /// 点击数字按钮执行的方法
+    @IBAction func touchDigit(_ sender: UIButton) {
+        let digit = sender.currentTitle! // 用户点击的内容
+        if self.userIsInTheMiddleOfTyping {
+            let textCurrentlyInDisplay = display.text! // 点击之前展示的内容
+            self.display.text = textCurrentlyInDisplay + digit
+            
+        } else {
+            self.display.text = digit
+            self.userIsInTheMiddleOfTyping = true
+        }
+        
+    }
+    
+    var displayValue: Double { // 暂时计算结果的计算型属性
+        get {
+            return Double(display.text!)!
+        }
+        set {
+            display.text = String(newValue)
+        }
+    }
+    
+    /// π、+、-、*、/ 运算
+    @IBAction func performOperation(_ sender: UIButton) {
+        self.userIsInTheMiddleOfTyping = false
+        if let mathematicalSymbol = sender.currentTitle {
+            switch mathematicalSymbol {
+            case "π":
+                self.displayValue = Double.pi
+            case "√":
+                self.displayValue = sqrt(self.displayValue)
+            default:
+                break
+            }
+        }
+        
+    }
 }
 
